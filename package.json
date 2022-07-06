@@ -1,0 +1,23 @@
+{
+  "name": "dev-tools",
+  "version": "2.0.0",
+  "license": "ISC",
+  "description": "utils and helpers for development",
+  "author": "Michael Miretski",
+  "type": "module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:4apaev/dev-tools.git"
+  },
+  "scripts": {
+    "pretest": "echo; echo \"pretest\"; echo",
+    "test": "node --test **/*.spec.js",
+    "posttest": "echo; echo \"posttest\"; echo",
+    "start": "python -m http.server 7777"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "8.19.0"
+  }
+}

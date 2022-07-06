@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.c8temp
+.c8cover
+
+_
+data/db
+types
+node_modules
+*.log
+
