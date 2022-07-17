@@ -23,8 +23,8 @@ Is.cmplx = x => Object(x) === x
 Is.prmtv = x => Object(x) !== x
 Is.ctor = x => Is.f(x) && x === x?.prototype?.constructor
 
-Is.empty = x => {
-  for (let k in x)
+Is.empty = x => { // eslint-disable-next-line no-unreachable-loop
+  for (let _ in x)
     return false
   return true
 }
@@ -49,8 +49,7 @@ Is.equal = (a, b) => {
   if (t == 'Array')
     return a.length === b.length && a.every((x, i) => Is.equal(x, b[ i ]))
 
-  else
-    return String(a) === String(b)
+  return String(a) === String(b)
 }
 
 Is.some = (...a) => {

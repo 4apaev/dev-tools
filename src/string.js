@@ -1,4 +1,4 @@
-import { use, µ } from './object.js'
+import { use } from './object.js'
 
 export function where(s, rx, cb) {
   return Array.from(
