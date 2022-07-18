@@ -15,6 +15,7 @@
     "src/is.js",
     "src/log.js",
     "src/math.js",
+    "src/mim.js",
     "src/object.js",
     "src/string.js",
     "src/symbol.js",

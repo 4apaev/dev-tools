@@ -7,7 +7,7 @@ import {
   assign,
 } from './object.js'
 
-export const Mim = O.o
+import * as Mim from '../src/mim.js'
 
 export default class Sync {
   static Head = new Headers
@@ -64,7 +64,7 @@ export default class Sync {
 
   type(k) {
     return k
-      ? this.set(Mim.CT, Mim.get(k, k))
+      ? this.set(Mim.CT, Mim.get(k))
       : this.get(Mim.CT)
   }
 
@@ -143,30 +143,3 @@ export default class Sync {
   }
 }
 
-assign(Mim, {
-  txt: 'text/plain',
-  html: 'text/html',
-  css: 'text/css',
-  csv: 'text/csv',
-  jsx: 'text/jsx',
-  yml: 'text/yaml',
-  png: 'image/png',
-  ico: 'image/x-icon',
-  zip: 'application/zip',
-  json: 'application/json',
-  js: 'application/javascript',
-  form: 'multipart/form-data',
-  query: 'application/x-www-form-urlencoded',
-
-  CT: 'content-type',
-  CL: 'content-length',
-
-  get(k, u) {
-    return Mim[ k ] ?? u
-  },
-
-  is(k, x) {
-    const v = x?.get?.(Mim.CT) ?? x?.[ Mim.CT ] ?? x
-    return Mim.get(k, k) === Mim.get(v, v)
-  },
-})
