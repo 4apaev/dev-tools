@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES6",
+    "target": "ES2022",
+    "outDir": "./types",
+    "pretty": true,
+    "allowJs": true,
+    "removeComments": true,
+    "emitDeclarationOnly": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,
+    "declaration": true,
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "tests/**/*",
+    "wheels/**/*"
+  ],
+}
