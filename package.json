@@ -6,18 +6,29 @@
   "author": "Michael Miretski",
   "type": "module",
   "main": "index.js",
+  "files": [
+    "src/array.js",
+    "src/dom.js",
+    "src/error.js",
+    "src/func.js",
+    "src/index.js",
+    "src/is.js",
+    "src/log.js",
+    "src/math.js",
+    "src/object.js",
+    "src/string.js",
+    "src/symbol.js",
+    "src/sync.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:4apaev/dev-tools.git"
   },
   "scripts": {
-    "pretest": "echo; echo \"pretest\"; echo",
     "test": "node --test **/*.spec.js",
-    "posttest": "echo; echo \"posttest\"; echo",
     "start": "python -m http.server 7777"
   },
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "8.19.0"
+    "eslint": "^8.20.0"
   }
 }
