@@ -92,7 +92,7 @@ export default class Sync {
 
   then(...a) {
     return this.end()
-        .then(this.parse)
+        .then(Sync.parse)
         .then(...a)
   }
 
@@ -105,7 +105,7 @@ export default class Sync {
     })
   }
 
-  async parse(re) {
+  static async parse(re) {
     // TODO: handle streams
 
     const payload = {
