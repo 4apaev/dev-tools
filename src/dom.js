@@ -1,9 +1,14 @@
+import Is from './is.js'
+import Sym from './symbol.js'
+import { rm } from './array.js'
 import {
-  µ, A, O, S,
-  Is, Sym,
-  rm, keys, each,
-  use, alias, assign,
-} from './util.js'
+  µ,
+  use,
+  each,
+  from,
+  alias,
+  assign,
+} from './object.js'
 
 const doc = document
 const EVT = Sym.EVT = Sym`📡 events`
@@ -11,7 +16,7 @@ const EVT = Sym.EVT = Sym`📡 events`
 export default function $(q, el = doc, cb) {
   Is.f(el) && (cb = el, el = doc)
   return cb ?? /^\++/.test(q)``
-    ? A.from(el.querySelectorAll(q.replace(/^\++/, '')), Is.s(cb)
+    ? Array.from(el.querySelectorAll(q.replace(/^\++/, '')), Is.s(cb)
       ? x => x[ cb ]
       : cb)
     : el.querySelector(q)
@@ -34,7 +39,7 @@ use($, {
 
   create(tag, o, ...ch) {
     const el = doc.createElement(tag)
-    o != µ && (Is(O, o) ? el.attr(o) : el.append(o))
+    o != µ && (Is(Object, o) ? el.attr(o) : el.append(o))
     el.append(...ch)
     return el
   },
@@ -61,7 +66,7 @@ use(Element.prototype, {
     return s == µ
       ? this.innerHTML
       : this.empty().insert(s?.raw
-        ? S.raw.apply(S, arguments)
+        ? String.raw.apply(String, arguments)
         : s)
   },
 
@@ -90,9 +95,9 @@ use(Element.prototype, {
       return this.toggle(k, v)
 
     if (k.startsWith('clas')) {
-      A.isArray(v) || Is.s(v)
-        ? this.clas.add(...[ v ].concat(v))
-        : keys(v).forEach(c => this.clas.toggle(c, !!v[ c ]))
+      Array.isArray(v) || Is.s(v)
+        ? this.classList.add(...[ v ].concat(v))
+        : each.kv(v, this.classList.toggle, this.classList)
     }
 
     else if (Is.o(v)) {
@@ -110,7 +115,7 @@ use(Element.prototype, {
   attr(k, v) {
     const i = arguments.length
     return i === 0
-      ? O.from(A.from(this.attributes, a => [ a.name,  this.get(a.name) ]))
+      ? from(Array.from(this.attributes, a => [ a.name,  this.get(a.name) ]))
       : i === 1
         ? Is.o(k)
           ? each(k, this.set, this)
@@ -119,7 +124,6 @@ use(Element.prototype, {
   },
 
   on(ch, query, cb) {
-    Number.isInteger
     Is.f(query) && ([ query, cb ] = [ cb, query ])
 
     const listener = query
@@ -145,7 +149,7 @@ use(Element.prototype, {
     return this
   },
 
-  emit(e, detail = O.o) {
+  emit(e, detail = {}) {
     this.dispatchEvent(use(new CustomEvent(e, {
       detail,
       bubbles: true,
