@@ -1,8 +1,4 @@
-import {
-  end as END,
-  once as ONCE,
-} from './symbol.js'
-
+import { end as END } from './symbol.js'
 import { use } from './object.js'
 
 const µ = undefined
@@ -31,12 +27,11 @@ export function sleep(...a) {
 }
 
 export function once(fn, ctx) {
-  let re, called
+  let ok, re
   return function () {
-    if (called === ONCE)
-      return re
-    called = ONCE
-    return re = apply(fn, ctx ?? this, arguments)
+    return ok
+      ? re
+      : re = apply(fn, arguments, ctx ?? this, ok = 1)
   }
 }
 
