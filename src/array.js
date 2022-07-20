@@ -9,6 +9,10 @@ export function predicate(x) {
   return o => ks.every(k => o[ k ] === x[ k ])
 }
 
+export function concat() {
+  return [].concat(...arguments)
+}
+
 export function fill(n, fx = x => x) {
   return typeof fx == 'function'
     ? Array.from({ length: n }, (_, i) => fx(i))
