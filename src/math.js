@@ -10,6 +10,18 @@ export function random(a, b, r = Math.random()) {
       : r * (b - a) + a)
 }
 
+export function combinations(n, r) {
+  const p = n - r
+  return factorial(n) / factorial(p)
+}
+
+export function factorial(n) {
+  let re = n
+  while (--n > 0)
+    re *= n
+  return re
+}
+
 use(random, {
   valueOf: Math.random,
   get bool() { return random > .5 },
