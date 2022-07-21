@@ -8,6 +8,7 @@ export function T(x) {
   return toString.call(x).slice(8, -1)
 }
 
+Is.T = T
 Is.a = Array.isArray
 Is.n = Number.isFinite
 Is.i = Number.isInteger
@@ -19,6 +20,7 @@ Is.b = x => typeof x == 'boolean'
 Is.s = x => typeof x == 'string'
 Is.S = x => typeof x == 'symbol'
 
+Is.args = x => T(x) == 'Arguments'
 Is.cmplx = x => Object(x) === x
 Is.prmtv = x => Object(x) !== x
 Is.ctor = x => Is.f(x) && x === x?.prototype?.constructor
