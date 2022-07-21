@@ -1,26 +1,18 @@
-export function predicate(x) {
-  if (typeof x == 'function')
-    return x
-
-  if (Array.isArray(x))
-    return o => x.every(k => k in o)
-
-  const ks = Object.keys(x)
-  return o => ks.every(k => o[ k ] === x[ k ])
-}
 
 export function concat() {
   return [].concat(...arguments)
+}
+export function pluck(it, k) {
+  return it.map(x => x[ k ])
+}
+export function where(it, iter, ctx) {
+  return it.filter(predicate(iter), ctx)
 }
 
 export function fill(n, fx = x => x) {
   return typeof fx == 'function'
     ? Array.from({ length: n }, (_, i) => fx(i))
     : Array(n).fill(fx)
-}
-
-export function where(it, iter, ctx) {
-  return it.filter(predicate(iter), ctx)
 }
 
 export function rm(it, iter, ctx, j = 0, re = []) {
@@ -42,10 +34,6 @@ export function chop(it, n) {
     tmp.push(it[ i ])
   }
   return re
-}
-
-export function pluck(it, k) {
-  return it.map(x => x[ k ])
 }
 
 export function invoke(it, fn, ...a) {
@@ -142,3 +130,13 @@ export function* permuteGen(it, n = it.length) {
   }
 }
 
+export function predicate(x) {
+  if (typeof x == 'function')
+    return x
+
+  if (Array.isArray(x))
+    return o => x.every(k => k in o)
+
+  const ks = Object.keys(x)
+  return o => ks.every(k => o[ k ] === x[ k ])
+}
