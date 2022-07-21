@@ -1,10 +1,6 @@
 .DS_Store
 .env
-.c8temp
-.c8cover
-
-_
-data/db
+pub
 types
 node_modules
 *.log
