@@ -1,4 +1,9 @@
-import { use } from './object.js'
+import {
+  use,
+  alias,
+} from './object.js'
+
+export const { raw } = String
 
 export function where(s, rx, cb) {
   return Array.from(
@@ -29,3 +34,5 @@ use(String.prototype, {
   get char()  { return this.charCodeAt() },
   get point() { return this.codePointAt() },
 })
+
+alias(String.prototype, 'includes', 'has')
