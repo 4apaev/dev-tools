@@ -61,7 +61,7 @@ export function rotor(n) {
   return r
 }
 
-export function set(it, x, pos) {
+export function insert(it, x, pos) {
   let i = it.length
 
   if (i === pos) {
