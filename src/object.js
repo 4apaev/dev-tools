@@ -8,6 +8,7 @@ export const O = Object
 export const {
   keys,
   assign,
+  hasOwn: own,
   fromEntries: from,
 } = O
 
