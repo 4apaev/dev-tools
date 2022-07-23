@@ -1,7 +1,5 @@
 import { end as END } from './symbol.js'
-import { use } from './object.js'
-
-const µ = undefined
+import { µ, use } from './object.js'
 
 export const delay = setTimeout
 delay.clear = clearTimeout
