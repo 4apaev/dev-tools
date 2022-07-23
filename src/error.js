@@ -1,84 +1,69 @@
-const µ = undefined
-const has = Symbol.hasInstance
 
 export default class Fail extends Error {
+
   name = 'Fail'
   opts = Object.create(null)
 
-  static cache = Cache(4)
-  static result = Cache(4)
+  constructor(msg, opt) {
+    if (opt === +opt)
+      opt = { code: opt }
 
-  constructor(m, o) {
-    if (o === +o)
-      o = { code: o }
-    else if (isErr(o) || typeof o == 'string')
-      o = { cause: o }
+    else if (typeof opt == 'string' || Error[ Symbol.hasInstance ](opt))
+      opt = { cause: opt }
 
-    super(m, o)
+    super(msg, opt)
 
-    const Start = this.constructor
     const orig = Error.prepareStackTrace
 
     Error.prepareStackTrace = (_, cs) => cs
-    Error.captureStackTrace(this, Start)
-
-    // eslint-disable-next-line no-unused-vars
+    Error.captureStackTrace(this, this.Ctor) // eslint-disable-next-line no-unused-vars
     const { stack } = this
-
     Error.prepareStackTrace = orig
-    typeof o == 'object' && Object.assign(this.opts, o)
-    Start.cache.set(this)
+
+    Object(opt) === opt
+    && Object.assign(this.opts, opt)
+
+    this.Ctor.prev = this.Ctor.curr
+    this.Ctor.curr = this
   }
 
-  get code() {
-    return this.opts.code ??= 0
-  }
+  get Ctor() { return this.constructor }
+  get code() { return this.opts.code ??= 0 }
 
-  static is = x => this[ has ](x)
-  static as = (m, o) => new this(m, o)
-  static assert = (x, m, o) => x || this.raise(m, o)
-  static raise = (m, o) => {
-    throw (this.cache = typeof o == 'function'
-      ? new o(m)
-      : new this(m, o))
-  }
+  static prev
+  static curr
+  static SThrow = Symbol('🧨 throw 🧨')
 
-  static Try = (fx, ctx, Ctor = this) => function () {
-    Ctor.result = Ctor.error = µ
-    try {
-      return [
-        µ,
-        Ctor.result = fx.apply(ctx ?? this, arguments),
-      ]
+  static is = x => this[ Symbol.hasInstance ](x)
+  static raise = (m, c) => { throw new this(m, c) }
+
+  static Try(fn, ctx, thrw) {
+    const { raise, SThrow } = this
+    thrw = SThrow === thrw
+
+    return function exec() {
+      exec.re = exec.er = undefined
+
+      try {
+        exec.re = fn.apply(ctx ?? this, arguments)
+        return thrw
+          ? exec.re
+          : true
+      }
+      catch (e) {
+        fn.er = e
+        thrw && raise('Try Fail', e)
+        return false
+      }
     }
-    catch (cause) {
-      return [
-        Ctor.error = new this(cause?.message ?? cause, {
-          argv: Array.from(arguments),
-          cause,
-          fx,
-        }),
-        µ,
-      ]
-    }
   }
-}
 
-export function Cache(size) {
-  const a = new Array(size)
-  a.i = 0
-  a.set = x => (a.head = a[ a.curr = a.i++ % size ] = x, a.i)
-  a.get = i => a[ i % size ]
-  return a
-}
-
-export function isErr(x) {
-  return Error[ has ](x)
 }
 
 export const {
   Try,
   raise,
-  assert,
 } = Fail
+
+Try.thrw = (fn, ctx) => Try(fn, ctx, Fail.SThrow)
 
