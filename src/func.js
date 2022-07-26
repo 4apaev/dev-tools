@@ -4,6 +4,10 @@ import { µ, use } from './object.js'
 export const delay = setTimeout
 delay.clear = clearTimeout
 
+export function isf(x) {
+  return typeof x == 'function'
+}
+
 export function echo(x) {
   return x
 }
