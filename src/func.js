@@ -20,8 +20,8 @@ export function construct(Ctor, ...args) {
   return Reflect.construct(Ctor, args)
 }
 
-export function sleep(...a) {
-  return new Promise(ok => delay(ok, ...a))
+export function sleep(ms, x) {
+  return new Promise(ok => delay(ok, ms, x))
 }
 
 export function once(fn, ctx) {
