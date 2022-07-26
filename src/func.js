@@ -1,8 +1,11 @@
 import { end as END } from './symbol.js'
 import { µ, use } from './object.js'
 
+export const F = Function
 export const delay = setTimeout
 delay.clear = clearTimeout
+
+export const bind = F.prototype.bind.bind(F.prototype.call, F.prototype.call)
 
 export function isf(x) {
   return typeof x == 'function'
@@ -14,10 +17,6 @@ export function echo(x) {
 
 export function apply(fn, args, ctx) {
   return Reflect.apply(fn, ctx, args)
-}
-
-export function bind(fn, ...a) {
-  return Reflect.apply(fn.call, fn.bind, a)
 }
 
 export function construct(Ctor, ...args) {
