@@ -1,0 +1,12 @@
+{
+  "folders": [
+    { "name": "🧰 µtil", "path": ".." },
+  ],
+
+  "settings": {
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "docker-compose.yml": "docker-compose.*, dockerfile*, nginx.conf, .env",
+    },
+  }
+}

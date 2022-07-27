@@ -1,0 +1,10 @@
+{
+  "compounds": [],
+  "configurations": [{
+      "type": "node",
+      "name": "invoke",
+      "request": "launch",
+      "program": "${workspaceFolder}/${relativeFile}",
+      "cwd": "${workspaceFolder}",
+  }]
+}
