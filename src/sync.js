@@ -37,7 +37,7 @@ export default class Sync {
 
   set(k, v) {
     if (Is(O, k))
-      each(k, this.headers.set, this.headers)
+      each.kv(k, this.headers.set, this.headers)
     else if (v != µ)
       this.headers.set(k, v)
     return this
@@ -56,7 +56,7 @@ export default class Sync {
 
   query(k, v) {
     if (Is(O, k))
-      each(k, this.url.searchParams.set, this.url.searchParams)
+      each.kv(k, this.url.searchParams.set, this.url.searchParams)
     else if (v != µ)
       this.url.searchParams.set(k, v)
     return this
