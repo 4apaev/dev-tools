@@ -12,6 +12,15 @@ export function where(s, rx, cb) {
   )
 }
 
+export function Tmpl(s, ...a) {
+  if (s?.raw) {
+    for (var i = 0, re = [ s.raw[ i ] ]; i < a.length;)
+      re = re.concat(a[ i++ ], s.raw[ i ]) // eslint-disable-next-line block-scoped-var
+    return re
+  }
+  return s.replace(/\$\d/g, (_, i) => a[ +i ])
+}
+
 export function Rx(s, ...a) {
   let fl = ''; let pttr = s?.raw ? String.raw(s, ...a) : s
   pttr = pttr.replace(/( +)?\n+( +)?/g, '').trim()
