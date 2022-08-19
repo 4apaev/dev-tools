@@ -1,10 +1,15 @@
-
 export function concat() {
   return [].concat(...arguments)
 }
+
 export function pluck(it, k) {
   return it.map(x => x[ k ])
 }
+
+export function unique(it) {
+  return Array.from(new Set(it))
+}
+
 export function where(it, iter, ctx) {
   return it.filter(predicate(iter), ctx)
 }
