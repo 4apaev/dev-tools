@@ -36,6 +36,7 @@ export default class Fail extends Error {
 
   static is = x => this[ Symbol.hasInstance ](x)
   static raise = (m, c) => { throw new this(m, c) }
+  static assert = (x, m, c) => !!x || this.raise(m, c)
 
   static Try(fn, ctx, thrw) {
     const { raise, SThrow } = this
@@ -63,6 +64,7 @@ export default class Fail extends Error {
 export const {
   Try,
   raise,
+  assert,
 } = Fail
 
 Try.thrw = (fn, ctx) => Try(fn, ctx, Fail.SThrow)
