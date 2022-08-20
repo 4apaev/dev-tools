@@ -1,3 +1,7 @@
+export function Len(it) {
+  return it?.length ?? it?.size
+}
+
 export function concat() {
   return [].concat(...arguments)
 }
