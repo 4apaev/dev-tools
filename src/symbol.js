@@ -1,7 +1,5 @@
 export default function Sym(s, ...a) {
-  return typeof k == 'symbol'
-    ? Symbol.keyFor(s)
-    : Symbol(s?.raw ? String.raw(s, ...a) : s)
+  return Symbol(s?.raw ? String.raw(s, ...a) : s)
 }
 
 export const ok = Sym.ok = Sym`✅`
