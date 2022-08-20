@@ -13,12 +13,13 @@ export function where(s, rx, cb) {
 }
 
 export function Tmpl(s, ...a) {
-  if (s?.raw) {
-    for (var i = 0, re = [ s.raw[ i ] ]; i < a.length;)
-      re = re.concat(a[ i++ ], s.raw[ i ]) // eslint-disable-next-line block-scoped-var
-    return re
-  }
-  return s.replace(/\$\d/g, (_, i) => a[ +i ])
+  if (s?.raw == null)
+    return s.replace(/\$(\d)/g, (_, i) => a[ i ])
+
+  let re = [ s.raw[ 0 ] ]
+  for (let i = 0; i < a.length;)
+    re = re.concat(a[ i++ ], s.raw[ i ])
+  return re.join('')
 }
 
 export function Rx(s, ...a) {
