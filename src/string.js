@@ -40,14 +40,15 @@ export function Tmpl(s, ...a) {
 }
 
 export function Rx(s, ...a) {
-  let fl = ''; let pttr = s?.raw ? String.raw(s, ...a) : s
+  let fl = ''
+  let pttr = s?.raw ? raw(s, ...a) : s
   pttr = pttr.replace(/( +)?\n+( +)?/g, '').trim()
   pttr = pttr.replace(/\/([gimdsuy]+)\/?$/, (_, f) => (fl += f, '')).trim()
   return new RegExp(pttr, fl)
 }
 
 export function dedent(s, ...a) {
-  const x = s?.raw ? String.raw(s, ...a) : s
+  const x = s?.raw ? raw(s, ...a) : s
   const i = x.length - x.trimLeft().length - 1
   return i > 0
     ? x.split('\n').map(x => x.slice(i)).join('\n')
