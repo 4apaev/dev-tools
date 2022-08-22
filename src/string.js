@@ -1,9 +1,26 @@
 import {
-  use,
   alias,
+  define,
 } from './object.js'
 
-export const { raw } = String
+import { bind } from './func.js'
+
+export const S = String
+export const { raw } = S
+export const point = bind(''.codePointAt)
+export const match = bind(''.match)
+export const repl = bind(''.replace)
+export const split = bind(''.split)
+export const slice = bind(''.slice)
+export const concat = bind(''.concat)
+export const trim = bind(''.trim)
+
+trim.left = bind(''.trimStart)
+trim.right = bind(''.trimEnd)
+trim.lines = s => trim(repl(s, /( +)?\n+( +)?/g, ''))
+
+pad.right = bind(''.padEnd)
+pad.left = bind(''.padStart)
 
 export function where(s, rx, cb) {
   return Array.from(
@@ -37,7 +54,7 @@ export function dedent(s, ...a) {
     : x
 }
 
-use(String.prototype, {
+define(String.prototype, 1, 0, {
   get up()    { return this.toUpperCase() },
   get low()   { return this.toLowerCase() },
   get log()   { return console.info('%s', this) },
