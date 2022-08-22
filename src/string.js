@@ -63,4 +63,5 @@ define(String.prototype, 1, 0, {
   get point() { return this.codePointAt() },
 })
 
+alias(String, 'fromCodePoint', 'from')
 alias(String.prototype, 'includes', 'has')
