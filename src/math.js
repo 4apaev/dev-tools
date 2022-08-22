@@ -85,12 +85,9 @@ export function sample(a) {
   return a[ floor(rand * a.length) ]
 }
 
-export function string(size, prev = '') {
-  prev += Array.from('abcdefghijklmnopqrstuvwxyz')
-      .sort(() => rand.bool ? 1 : -1)
-      .join('')
-  return prev.length < size
-    ? rand.string(size, prev)
-    : prev.slice(0, size)
+export function string(size, s = '') {
+  while (size--)
+    s += sample('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+  return s
 }
 
