@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 
 import Is from './is.js'
-import { stop } from './symbol.js'
+import {
+  stop as STOP,
+  flip as FLIP,
+} from './symbol.js'
 
 export const µ = undefined
 export const O = Object
@@ -113,11 +116,21 @@ export function define() {
   return a
 }
 
-export function each(it, fx, ctx = this) {
-  for (const [ k, v ] of entries(it)) {
-    if (stop === fx.call(ctx, v, k))
-      break
-  }
+export function each(it, fx, ctx, sym) {
+  let k = 0
+  let v = 1
+
+  if (FLIP === it)
+    k = 1, v = 0, it = fx, fx = ctx, ctx = sym
+
+  else if (FLIP === ctx)
+    k = 1, v = 0, ctx = sym, sym = FLIP
+
+  else if (FLIP === sym)
+    k = 1, v = 0
+
+  for (const kv of entries(it))
+    fx.call(ctx, kv[ k ], kv[ v ])
   return ctx
 }
 
