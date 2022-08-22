@@ -28,7 +28,7 @@ Is.ctor = x => Is.f(x) && x === x?.prototype?.constructor
 Is.empty = x => { // eslint-disable-next-line no-unreachable-loop
   for (let _ in x)
     return false
-  return true
+  return Is.cmplx(x) || !x
 }
 
 Is.inst = (a, b) => a[ Symbol.hasInstance ](b)
