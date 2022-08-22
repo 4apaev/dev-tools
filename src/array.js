@@ -1,9 +1,17 @@
+import { bind } from './func.js'
+
+export const A = Array
+export const at            = bind([].at)
+export const concat        = bind([].concat)
+export const pop           = bind([].pop)
+export const push          = bind([].push)
+export const slice         = bind([].slice)
+export const sort          = bind([].sort)
+export const splice        = bind([].splice)
+export const join          = bind([].join)
+
 export function Len(it) {
   return it?.length ?? it?.size
-}
-
-export function concat() {
-  return [].concat(...arguments)
 }
 
 export function pluck(it, k) {
