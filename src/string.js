@@ -55,6 +55,17 @@ export function dedent(s, ...a) {
     : x
 }
 
+export function pad(s, n) {
+  let re = ' '
+  let flag = 0
+  while (n > s.length) {
+    s = (flag ^= 1)
+      ? s + re
+      : re + s
+  }
+  return s
+}
+
 define(String.prototype, 1, 0, {
   get up()    { return this.toUpperCase() },
   get low()   { return this.toLowerCase() },
