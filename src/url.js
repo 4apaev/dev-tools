@@ -1,3 +1,5 @@
+import { O, append } from './object.js'
+
 export default class QUrl extends URL {
 
   get path() {
@@ -7,21 +9,14 @@ export default class QUrl extends URL {
   set path(x) {
     let [ path, ...search ] = x.split('?')
     this.pathname = path
-    this.search = search.join('?')
+    this.query = search.join('?')
   }
 
   get query() {
-    const o = {}
-    for (const [ k, v ] of this.searchParams)
-      o[ k ] = k in o ? [].concat(o[ k ], v) : v
-    return o
+    return append(O.o, this.searchParams)
   }
 
   set query(x) {
-    for (const [ k, v ] of new URLSearchParams(x)) {
-      this.searchParams[ this.searchParams.has(k)
-        ? 'append'
-        : 'set' ](k, v)
-    }
+    append(this.searchParams, new URLSearchParams(x))
   }
 }
