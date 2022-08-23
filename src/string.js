@@ -76,6 +76,8 @@ export function cat(s, ...a) {
     : [ s.slice(0, i), s.slice(++i) ]
 }
 
+export function extend() {
+  /* eslint-disable indent */
 define(String.prototype, 1, 0, {
   get up()    { return this.toUpperCase() },
   get low()   { return this.toLowerCase() },
@@ -86,3 +88,5 @@ define(String.prototype, 1, 0, {
 
 alias(String, 'fromCodePoint', 'from')
 alias(String.prototype, 'includes', 'has')
+  /* eslint-enable indent */
+}
