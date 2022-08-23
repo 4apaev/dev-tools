@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import Is from './is.js'
+import { concat } from './array.js'
 import {
   stop as STOP,
   flip as FLIP,
@@ -113,6 +114,18 @@ export function define() {
 
   for (a of src)
     set(a, dsc)
+  return a
+}
+
+export function append(a, b) {
+  const cb = Is.f(a?.set)
+    ? Is.f(a?.append)
+      ? (k, v) => a[ a.has(k) ? 'append' : 'set' ](k, v)
+      : (k, v) => a.set(k, a.has(k) ? concat(a.get(k), v) : v)
+    : (k, v) => a[ k ] = k in a ? concat(a[ k ], v) : v
+
+  for (const [ k, v ] of entries(b))
+    cb(k, v)
   return a
 }
 
