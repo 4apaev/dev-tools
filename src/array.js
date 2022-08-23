@@ -2,7 +2,7 @@ import { bind } from './func.js'
 
 export const A = Array
 export const at            = bind([].at)
-export const concat        = bind([].concat)
+export const concat        = bind([].concat, [])
 export const pop           = bind([].pop)
 export const push          = bind([].push)
 export const slice         = bind([].slice)
