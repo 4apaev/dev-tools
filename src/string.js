@@ -1,8 +1,10 @@
 import {
+  µ,
   alias,
   define,
 } from './object.js'
 
+import Is from './is.js'
 import { bind } from './func.js'
 
 export const S = String
@@ -13,9 +15,6 @@ export const char = bind(''.charCodeAt)
 export const point = bind(''.codePointAt)
 export const match = bind(''.match)
 export const repl = bind(''.replace)
-export const split = bind(''.split)
-export const slice = bind(''.slice)
-export const concat = bind(''.concat)
 export const trim = bind(''.trim)
 
 trim.left = bind(''.trimStart)
@@ -32,14 +31,24 @@ export function where(s, rx, cb) {
   )
 }
 
-export function Tmpl(s, ...a) {
-  if (s?.raw == null)
-    return s.replace(/\$(\d)/g, (_, i) => a[ i ])
+function resolve(a, b) {
+  let m = b.match(/^\s*\/(\w+)(.*)/)
+  return m
+    ? [ Is.empty(a) ? m[ 1 ] : a, m[ 2 ] ]
+    : [ a, b ]
+}
 
-  let re = [ s.raw[ 0 ] ]
-  for (let i = 0; i < a.length;)
-    re = re.concat(a[ i++ ], s.raw[ i ])
-  return re.join('')
+export function Tmpl(str, ...argv) {
+  if (str?.raw == µ) {
+    return str.replace(/\$(\d)(?:\/(\w+))?/g, (_, a, b) => Is.empty(argv[ a ])
+      ? b ?? _
+      : argv[ a ])
+  }
+
+  let rs = [ str.raw[ 0 ] ]
+  for (let i = 0; i < argv.length;)
+    rs = rs.concat(...resolve(argv[ i++ ], str.raw[ i ]))
+  return rs.join('')
 }
 
 export function Rx(s, ...a) {
