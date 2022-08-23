@@ -7,6 +7,9 @@ import { bind } from './func.js'
 
 export const S = String
 export const { raw } = S
+export const up = bind(''.toUpperCase)
+export const low = bind(''.toLowerCase)
+export const char = bind(''.charCodeAt)
 export const point = bind(''.codePointAt)
 export const match = bind(''.match)
 export const repl = bind(''.replace)
