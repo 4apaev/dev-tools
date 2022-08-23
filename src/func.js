@@ -23,6 +23,18 @@ export function construct(Ctor, ...args) {
   return Reflect.construct(Ctor, args)
 }
 
+export function compose(f, ...fs) {
+  return (...a) => fs.reduce((prev, next) => next(prev), f(...a))
+}
+
+export function box(x) {
+  return () => x
+}
+
+export function thunk(prev) {
+  return next => next(prev)
+}
+
 export function sleep(ms, x) {
   return new Promise(ok => delay(ok, ms, x))
 }
