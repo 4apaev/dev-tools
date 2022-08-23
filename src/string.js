@@ -66,6 +66,13 @@ export function pad(s, n) {
   return s
 }
 
+export function cat(s, ...a) {
+  let i = s.indexOf(...a)
+  return i < 0
+    ? [ s, '' ]
+    : [ s.slice(0, i), s.slice(++i) ]
+}
+
 define(String.prototype, 1, 0, {
   get up()    { return this.toUpperCase() },
   get low()   { return this.toLowerCase() },
