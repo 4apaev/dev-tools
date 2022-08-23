@@ -51,7 +51,7 @@ export function entries(x) {
 }
 
 export function pick(it, ...a) {
-  return reduce(it, (re, v, k) => {
+  return reduce(it, (re, k, v) => {
     if (a.includes(k))
       re[ k ] = v
     return re
@@ -59,7 +59,7 @@ export function pick(it, ...a) {
 }
 
 export function omit(it, ...a) {
-  return reduce(it, (re, v, k) => {
+  return reduce(it, (re, k, v) => {
     if (!a.includes(k))
       re[ k ] = v
     return re
@@ -136,7 +136,7 @@ export function each(it, fx, ctx, sym) {
 
 export function reduce(it, fx, memo, ctx = this) {
   for (const [ k, v ] of entries(it)) {
-    const re = fx.call(ctx, memo, v, k)
+    const re = fx.call(ctx, memo, k, v)
     if (stop === re)
       break
     memo = re
@@ -144,10 +144,14 @@ export function reduce(it, fx, memo, ctx = this) {
   return memo
 }
 
-each.kv = (it, fx, ctx) => each(it, (v, k) => fx.call(ctx, k, v), ctx)
-reduce.vkm = (it, fx, m, ctx) => reduce(it, (m, v, k) => fx.call(ctx, v, k, m), m, ctx)
-reduce.mkv = (it, fx, m, ctx) => reduce(it, (m, v, k) => fx.call(ctx, m, k, v), m, ctx)
-reduce.kvm = (it, fx, m, ctx) => reduce(it, (m, v, k) => fx.call(ctx, k, v, m), m, ctx)
+each.kv = each
+each.vk = (it, fx, ctx) => each(it, (k, v) => fx.call(ctx, v, k), ctx)
+
+reduce.mkv = reduce
+reduce.mkv = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, k, v), m, ctx)
+reduce.mvk = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, v, k), m, ctx)
+reduce.kvm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, k, v, m), m, ctx)
+reduce.vkm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, v, k, m), m, ctx)
 
 define(O, use, define, 1, 0, {
   get o() {
