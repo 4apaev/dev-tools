@@ -32,7 +32,9 @@ export function fill(n, fx = x => x) {
     : Array(n).fill(fx)
 }
 
-export function rm(it, iter, ctx, j = 0, re = []) {
+export function rm(it, iter, ctx) {
+  let j = 0
+  let re = []
   for (let x, i = 0, cb = predicate(iter); i < it.length; i++) {
     cb.call(ctx, x = it[ i ], i)
       ? re.push(x)
