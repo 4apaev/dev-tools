@@ -157,6 +157,7 @@ export function reduce(it, fx, memo, ctx = this) {
   return memo
 }
 
+each.FLIP = FLIP
 each.kv = each
 each.vk = (it, fx, ctx) => each(it, (k, v) => fx.call(ctx, v, k), ctx)
 
