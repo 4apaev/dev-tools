@@ -10,6 +10,8 @@ export const sort          = bind([].sort)
 export const splice        = bind([].splice)
 export const join          = bind([].join)
 
+const isf = x => typeof x == 'function'
+
 export function Len(it) {
   return it?.length ?? it?.size
 }
@@ -27,7 +29,7 @@ export function where(it, iter, ctx) {
 }
 
 export function fill(n, fx = x => x) {
-  return typeof fx == 'function'
+  return isf(fx)
     ? Array.from({ length: n }, (_, i) => fx(i))
     : Array(n).fill(fx)
 }
@@ -56,9 +58,9 @@ export function chop(it, n) {
 }
 
 export function invoke(it, fn, ...a) {
-  return it.map(typeof fn == 'function'
+  return it.map(isf(fn)
     ? x => fn.apply(x, a)
-    : typeof it?.[ 0 ]?.[ fn ] == 'function'
+    : isf(it?.[ 0 ]?.[ fn ])
       ? x => x[ fn ].apply(x, a)
       : x => x[ fn ])
 }
@@ -150,7 +152,7 @@ export function* permuteGen(it, n = it.length) {
 }
 
 export function predicate(x) {
-  if (typeof x == 'function')
+  if (isf(x))
     return x
 
   if (Array.isArray(x))
