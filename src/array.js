@@ -1,3 +1,4 @@
+import Is from './is.js'
 import { bind } from './func.js'
 
 export const A = Array
@@ -10,28 +11,53 @@ export const sort          = bind([].sort)
 export const splice        = bind([].splice)
 export const join          = bind([].join)
 
-const isf = x => typeof x == 'function'
+export const { from } = Array
 
-export function Len(it) {
-  return it?.length ?? it?.size
+export function first(it)   { return it?.[ 0 ] }
+export function last(it)    { return at(it, -1) }
+export function head(it, i) { return slice(it, 0, i ?? 1) }
+export function tail(it, i) { return slice(it, i ?? 1) }
+
+export function Len(it) { return it?.length ?? it?.size }
+
+export function unique(it) { return from(new Set(it)) }
+
+export function prop(k)     { return o => o[ k ] }
+export function pluck(it, k) { return map(it, prop(k)) }
+export function compact(it) { return where(it, Boolean) }
+
+export function map(it, cb, ctx) {
+  let i = Len(it)
+  let a = Array(i)
+  for (; i--;)
+    a[ i ] = cb.call(ctx, at(it, i), i)
+  return a
 }
 
-export function pluck(it, k) {
-  return it.map(x => x[ k ])
-}
+export function invoke(it, fn, ...a) {
+  if (Is.f(fn))
+    return map(it, x => fn.call(x, x, ...a))
 
-export function unique(it) {
-  return Array.from(new Set(it))
+  if (Is.f(at(it)?.[ fn ]))
+    return map(it, x => x[ fn ].apply(x, a))
+
+  return map(it, prop(fn))
 }
 
 export function where(it, iter, ctx) {
-  return it.filter(predicate(iter), ctx)
+  let a = []
+  for (let x, i = Len(it), cb = predicate(iter); i--;) {
+    cb.call(ctx, x = at(it, i), i)
+      && a.push(x)
+  }
+  return a
 }
 
-export function fill(n, fx = x => x) {
-  return isf(fx)
-    ? Array.from({ length: n }, (_, i) => fx(i))
-    : Array(n).fill(fx)
+export function find(it, iter, ctx) {
+  for (let x, i = Len(it), cb = predicate(iter); i--;) {
+    if (cb.call(ctx, x = at(it, i), i))
+      return x
+  }
 }
 
 export function rm(it, iter, ctx) {
@@ -46,6 +72,32 @@ export function rm(it, iter, ctx) {
   return re
 }
 
+export function insert(it, x, pos) {
+  let i = Len(it)
+  Number.isInteger(pos = +pos) || (pos = i)
+
+  if (pos === i)
+    return it.push(x), it
+
+  pos += i
+  pos %= i
+
+  if (pos < 1)
+    return it.unshift(x), it
+
+  while (i) {
+    if (i === pos) return (it[ i ] = x), it
+    it[ i-- ] = it[ i ]
+  }
+  return it
+}
+
+export function fill(n, fx = x => x) {
+  return Is.f(fx)
+    ? from({ length: n }, (_, i) => fx(i))
+    : Array(n).fill(fx)
+}
+
 export function chop(it, n) {
   const re = []
   const cb = n === +n ? (_, i) => 0 === i % n : n
@@ -57,57 +109,14 @@ export function chop(it, n) {
   return re
 }
 
-export function invoke(it, fn, ...a) {
-  return it.map(isf(fn)
-    ? x => fn.apply(x, a)
-    : isf(it?.[ 0 ]?.[ fn ])
-      ? x => x[ fn ].apply(x, a)
-      : x => x[ fn ])
-}
-
-export function compact(it) {
-  return it.filter(x =>
-    Boolean(typeof x == 'string'
-      ? x.trim()
-      : x != null))
-}
-
 export function rotor(n) {
   const r = Array(n)
-  r.i = 0
+  r.index = 0
   r.add = x => {
-    r.head = r[ r.cursor = r.i++ % n ] = x
-    return r.i
+    r.head = r[ r.cursor = r.index++ % n ] = x
+    return r.index
   }
   return r
-}
-
-export function insert(it, x, pos) {
-  let i = it.length
-
-  if (i === pos) {
-    it.push(x)
-    return it
-  }
-
-  pos += i
-  pos %= i
-
-  if (i < 1) {
-    it.unshift(x)
-    return it
-  }
-
-  while (i) {
-    if (i === pos) {
-      it[ i ] = x
-      break
-    }
-    else {
-      it[ i-- ] = it[ i ]
-    }
-  }
-  return it
 }
 
 export function combo(n, cb = x => x) {
@@ -124,22 +133,23 @@ export function combo(n, cb = x => x) {
 
 export function permute(it, n = it.length, re = []) {
   if (n === 1)
-    return re.push(Array.from(it))
+    return re.push(from(it))
 
   for (let j, i = 0, m = n - 1; i < n; i++) {
     permute(it, m, re)
-
-    j = n % 2 ? 0 : i; [
-
-      it[ j ], it[ m ] ] = [
-      it[ m ], it[ j ] ]
+    j = n % 2 ? 0 : i;
+    [
+      it[ j ], it[ m ],
+    ] = [
+      it[ m ], it[ j ],
+    ]
   }
   return re
 }
 
 export function* permuteGen(it, n = it.length) {
   if (n <= 1) {
-    yield Array.from(it)
+    yield from(it)
   }
   else {
     for (let j, i = 0, m = n - 1; i < n; i++) {
@@ -152,10 +162,10 @@ export function* permuteGen(it, n = it.length) {
 }
 
 export function predicate(x) {
-  if (isf(x))
+  if (Is.f(x))
     return x
 
-  if (Array.isArray(x))
+  if (Is.a(x))
     return o => x.every(k => k in o)
 
   const ks = Object.keys(x)
