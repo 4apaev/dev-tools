@@ -162,7 +162,7 @@ each.kv = each
 each.vk = (it, fx, ctx) => each(it, (k, v) => fx.call(ctx, v, k), ctx)
 
 reduce.mkv = reduce
-reduce.mkv = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, k, v), m, ctx)
+// reduce.mkv = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, k, v), m, ctx)
 reduce.mvk = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, v, k), m, ctx)
 reduce.kvm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, k, v, m), m, ctx)
 reduce.vkm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, v, k, m), m, ctx)
