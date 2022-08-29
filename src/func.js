@@ -15,6 +15,10 @@ export function echo(x) {
   return x
 }
 
+echo.argv = function argv() {
+  return arguments
+}
+
 export function apply(fn, args, ctx) {
   return Reflect.apply(fn, ctx, args)
 }
@@ -64,9 +68,9 @@ export function debounce(fn, ms, ctx) {
   })
 }
 
-export function Co(fn, ...argv) {
+export function Co(fn, ...args) {
   let end, prev, value
-  const gen = fn(...argv)
+  const gen = fn(...args)
 
   const next = (...a) => {
     if (end === END)
