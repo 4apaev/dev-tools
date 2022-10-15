@@ -15,7 +15,7 @@ const EVT = Sym.EVT = Sym`📡 events`
 
 export default function $(q, el = doc, cb) {
   Is.f(el) && (cb = el, el = doc)
-  return cb ?? /^\++/.test(q)``
+  return cb ?? /^\++/.test(q)
     ? Array.from(el.querySelectorAll(q.replace(/^\++/, '')), Is.s(cb)
       ? x => x[ cb ]
       : cb)
