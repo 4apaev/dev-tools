@@ -126,40 +126,31 @@ export function append(a, b) {
   return a
 }
 
-export function each(it, fx, ctx, sym) {
-  let k = 0
-  let v = 1
-
-  if (FLIP === it)
-    k = 1, v = 0, it = fx, fx = ctx, ctx = sym
-
-  else if (FLIP === ctx)
-    k = 1, v = 0, ctx = sym, sym = FLIP
-
-  else if (FLIP === sym)
-    k = 1, v = 0
-
-  for (const kv of entries(it))
-    fx.call(ctx, kv[ k ], kv[ v ])
+export function each(it, fx, ctx = this) {
+  for (const [ k, v ] of entries(it)) {
+    if (STOP === fx.call(ctx, k, v))
+      break
+  }
   return ctx
 }
 
-export function reduce(it, fx, memo, ctx = this) {
+export function reduce(it, fx, acc, ctx = this) {
   for (const [ k, v ] of entries(it)) {
-    const re = fx.call(ctx, memo, k, v)
-    if (stop === re)
+    const re = fx.call(ctx, k, v)
+    if (STOP === re)
       break
-    memo = re
+    else
+      acc = re
   }
-  return memo
+  return acc
 }
 
-each.FLIP = FLIP
+each.STOP = STOP
 each.kv = each
 each.vk = (it, fx, ctx) => each(it, (k, v) => fx.call(ctx, v, k), ctx)
 
+reduce.STOP = STOP
 reduce.mkv = reduce
-// reduce.mkv = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, k, v), m, ctx)
 reduce.mvk = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, v, k), m, ctx)
 reduce.kvm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, k, v, m), m, ctx)
 reduce.vkm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, v, k, m), m, ctx)
