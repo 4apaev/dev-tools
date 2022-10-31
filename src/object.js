@@ -2,10 +2,7 @@
 
 import Is from './is.js'
 import { concat } from './array.js'
-import {
-  stop as STOP,
-  flip as FLIP,
-} from './symbol.js'
+import { STOP } from './symbol.js'
 
 export const µ = undefined
 export const O = Object
