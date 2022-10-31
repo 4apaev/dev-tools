@@ -22,24 +22,48 @@ export function mix(...a) {
   return assign(O.o, ...a)
 }
 
-export function get(a, b) {
-  return b
-    ? O.getOwnPropertyDescriptor(a, b)
-    : O.getOwnPropertyDescriptors(a)
-}
+export const define = use
+export function use() /* exp */ {
+  if (arguments.length === 0)
+    return Object.create(null)
 
-export function set(a, b, c) {
-  return c
-    ? O.defineProperty(a, b, c)
-    : O.defineProperties(a, b)
-}
+  if (arguments.length === 1)
+    return Object(arguments[ 0 ])
 
-export function use(a, b) {
-  return set(a, get(b))
+  if (arguments.length === 2) {
+    return Object.defineProperties(arguments[ 0 ],
+      Object.getOwnPropertyDescriptors(arguments[ 1 ]))
+  }
+
+  // eslint-disable-next-line one-var
+  let x, dsc = {}, cew = [], trg = [], src = []
+  for (x of arguments) {
+    Object(x) === x
+      ? cew.length ? src.push(x) : trg.push(x)
+      : cew.push(x)
+  }
+
+  trg.length || trg.push(src.pop())
+
+  if (trg.length === 0) throw new Error('Invalid definition. missing target')
+  if (src.length === 0) throw new Error('Invalid definition. missing source')
+
+  for (x of src)
+    Object.assign(dsc, Object.getOwnPropertyDescriptors(x))
+
+      /* eslint-disable indent, brace-style */
+      for (x in dsc) {     (dsc[ x ].get ?? (
+          cew[ 2 ] != µ && (dsc[ x ].writable     = cew[ 2 ])))
+          cew[ 1 ] != µ && (dsc[ x ].enumerable   = cew[ 1 ])
+          cew[ 0 ] != µ && (dsc[ x ].configurable = cew[ 0 ])
+      } /* eslint-enable indent, brace-style */
+
+  for (x of trg) Object.defineProperties(x, dsc)
+  return x
 }
 
 export function alias(a, b, c = b, d = a) {
-  return set(d, c, get(a, b))
+  return Object.defineProperty(d, c, Object.getOwnPropertyDescriptor(a, b))
 }
 
 export function entries(x) {
@@ -74,44 +98,6 @@ export function tost(x, n) {
     }
     return  v
   }, n ?? 2)
-}
-
-export function define() {
-  if (arguments.length < 2)
-    return O(arguments[ 0 ])
-
-  let a // eslint-disable-next-line one-var
-  const dsc = {}, trg = [], src = [], cew = []
-
-  for (a of arguments)
-    Is.cmplx(a) ? cew.length ? trg.push(a) : src.push(a) : cew.push(a)
-
-  if (src.length === 0)
-    src.push(trg.shift())
-
-  else if (trg.length === 0)
-    trg.push(src.pop())
-
-  if (src.length === 0)
-    throw 'Impossible Definition. missing source'
-
-  if (trg.length === 0)
-    throw 'Impossible Definition. missing target'
-
-  for (a of trg)
-    assign(dsc, get(a))
-
-  if (cew.length) {                                       // eslint-disable-next-line brace-style
-    for (a in dsc) { (dsc[ a ].get ?? (                   // eslint-disable-next-line indent
-      cew[ 2 ] == µ || (dsc[ a ].writable = cew[ 2  ])))  // eslint-disable-next-line indent
-      cew[ 1 ] == µ || (dsc[ a ].enumerable = cew[ 1 ])   // eslint-disable-next-line indent
-      cew[ 0 ] == µ || (dsc[ a ].configurable = cew[ 0 ])
-    }
-  }
-
-  for (a of src)
-    set(a, dsc)
-  return a
 }
 
 export function append(a, b) {
@@ -155,7 +141,7 @@ reduce.mvk = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, m, v, k), 
 reduce.kvm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, k, v, m), m, ctx)
 reduce.vkm = (it, fx, m, ctx) => reduce(it, (m, k, v) => fx.call(ctx, v, k, m), m, ctx)
 
-define(O, use, define, 1, 0, {
+use(Object, use, define, 1, 0, {
   get o() {
     return O.create(null)
   },
