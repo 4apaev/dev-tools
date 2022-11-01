@@ -62,30 +62,30 @@ export function use() /* exp */ {
   return x
 }
 
-export function alias(a, b, c = b, d = a) {
-  return Object.defineProperty(d, c, Object.getOwnPropertyDescriptor(a, b))
+export function alias(a, b, c, d) {
+  Is.cmplx(c) && (d = c, c = b)
+  return Object.defineProperty(d ?? a, c ?? b,
+    Object.getOwnPropertyDescriptor(a, b))
 }
 
 export function entries(x) {
-  return Symbol.iterator in O(x)
-    ? x?.entries?.() ?? Array.from(x, (v, k) => [ k, v ])
-    : O.entries(x)
+  if (Symbol.iterator in Object(x)) {
+    let tmp = x?.entries?.()
+    return Array.from(tmp ?? x, tmp
+      ? undefined
+      : (v, k) => [ k, v ])
+  }
+  return Object.entries(x)
 }
 
 export function pick(it, ...a) {
-  return reduce(it, (re, k, v) => {
-    if (a.includes(k))
-      re[ k ] = v
-    return re
-  }, {})
+  let re = {}
+  return each(it, (k, v) => a.includes(k) && (re[ k ] = v), re)
 }
 
 export function omit(it, ...a) {
-  return reduce(it, (re, k, v) => {
-    if (!a.includes(k))
-      re[ k ] = v
-    return re
-  }, {})
+  let re = {}
+  return each(it, (k, v) => a.includes(k) || (re[ k ] = v), re)
 }
 
 export function tost(x, n) {
