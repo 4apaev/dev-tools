@@ -2,16 +2,16 @@ export default function Sym(s, ...a) {
   return Symbol(s?.raw ? String.raw(s, ...a) : s)
 }
 
-export const has = Sym.has = Symbol.hasOwnProperty
-export const it = Sym.has = Symbol.iterator
+export const HAS  = Sym.has  = Symbol.hasOwnProperty
+export const ITER = Sym.iter = Symbol.iterator
 
-export const ok = Sym.ok = Sym`✅`
-export const no = Sym.no = Sym`❎`
-export const id = Sym.id = Sym`🆔`
-export const end = Sym.end = Sym`🏁`
-export const once = Sym.once = Sym`🔂`
-export const stop = Sym.stop = Sym`⛔️`
-export const start = Sym.start = Sym`🎬`
-export const help = Sym.help = Sym`🆘`
-export const flag = Sym.flag = Sym`🚩`
-export const flip = Sym.flip = Sym`🩴`
+export const OK    = Sym.ok    = Sym`✅ OK`
+export const NO    = Sym.no    = Sym`❎ NO`
+export const ID    = Sym.id    = Sym`🆔 ID`
+export const END   = Sym.end   = Sym`🏁 END`
+export const ONCE  = Sym.once  = Sym`🔂 ONCE`
+export const STOP  = Sym.stop  = Sym`⛔️ STOP`
+export const START = Sym.start = Sym`🎬 START`
+export const HELP  = Sym.help  = Sym`🆘 HELP`
+export const FLAG  = Sym.flag  = Sym`🚩 FLAG`
+export const FLIP  = Sym.flip  = Sym`🩴 FLIP`

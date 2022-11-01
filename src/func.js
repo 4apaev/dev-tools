@@ -1,4 +1,4 @@
-import { end as END } from './symbol.js'
+import { END } from './symbol.js'
 import { µ, use } from './object.js'
 
 export const F = Function

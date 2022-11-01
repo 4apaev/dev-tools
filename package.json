@@ -5,17 +5,17 @@
   "description": "utils and helpers for development",
   "author": "Michael Miretski",
   "type": "module",
-  "main": "index.js",
   "files": [
     "src/array.js",
+    "src/date.js",
     "src/dom.js",
     "src/error.js",
     "src/func.js",
-    "src/index.js",
     "src/is.js",
     "src/log.js",
     "src/math.js",
     "src/mim.js",
+    "src/number2word.js",
     "src/object.js",
     "src/string.js",
     "src/symbol.js",
@@ -31,6 +31,7 @@
     "start": "python -m http.server 7777"
   },
   "devDependencies": {
-    "@types/node": "^18.7.11"
+    "eslint": "^8.26.0",
+    "@types/node": "^18.11.8"
   }
 }
