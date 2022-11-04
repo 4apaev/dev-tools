@@ -1,7 +1,5 @@
-export default function Is(a, b) {
-  return arguments.length < 2
-    ? a != null
-    : a === b?.constructor
+export default function Is() {
+  return [ Is.it, Is.it, Is.Inst, Is.inst ][ arguments.length ].apply(this, arguments)
 }
 
 export function T(x) {
@@ -31,6 +29,8 @@ Is.empty = x => { // eslint-disable-next-line no-unreachable-loop
   return Is.cmplx(x) || !x
 }
 
+Is.it = x => x != null
+Is.Inst = (a, b) => a === b?.constructor
 Is.inst = (a, b) => a[ Symbol.hasInstance ](b)
 
 Is.equal = (a, b) => {

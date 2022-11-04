@@ -14,12 +14,10 @@ const doc = document
 const EVT = Sym.EVT = Sym`📡 events`
 
 export default function $(q, el = doc, cb) {
-  Is.f(el) && (cb = el, el = doc)
+  Is(Node, el, 1) || (cb = el, el = doc)
   return cb ?? /^\++/.test(q)
-    ? Array.from(el.querySelectorAll(q.replace(/^\++/, '')), Is.s(cb)
-      ? x => x[ cb ]
-      : cb)
-    : el.querySelector(q)
+    ? Array.from(el.query(q.replace(/^\++/, '')), Is.f(cb ??= x => x) ? cb : x => x[ cb ])
+    : el.find(q)
 }
 
 use($, {
@@ -49,7 +47,6 @@ alias(Node.prototype, 'textContent',  'text')
 alias(Node.prototype, 'parentElement',  'parent')
 
 alias(Element.prototype, 'classList',  'clas')
-alias(Element.prototype, 'querySelector',  'find')
 alias(Element.prototype, 'hasAttribute',  'has')
 alias(Element.prototype, 'toggleAttribute',  'toggle')
 alias(Element.prototype, 'lastElementChild',  'last')
@@ -57,7 +54,16 @@ alias(Element.prototype, 'firstElementChild',  'first')
 alias(Element.prototype, 'nextElementSibling',  'next')
 alias(Element.prototype, 'previousElementSibling',  'prev')
 
+alias(Element.prototype, 'querySelectorAll',  'query')
+alias(Element.prototype, 'querySelector',  'find')
+alias(Document.prototype, 'querySelector',  'find')
+alias(Document.prototype, 'querySelectorAll',  'query')
+
 use(Element.prototype, {
+  get attrs() {
+    return this.attr()
+  },
+
   $(s, cb) {
     return $(s, this, cb)
   },
@@ -97,7 +103,7 @@ use(Element.prototype, {
     if (k.startsWith('clas')) {
       Array.isArray(v) || Is.s(v)
         ? this.classList.add(...[ v ].concat(v))
-        : each.kv(v, this.classList.toggle, this.classList)
+        : each(v, this.classList.toggle, this.classList)
     }
 
     else if (Is.o(v)) {
