@@ -88,6 +88,23 @@ export function omit(it, ...a) {
   return each(it, (k, v) => a.includes(k) || (re[ k ] = v), re)
 }
 
+export function get(ctx, path, fallback) {
+  return path.split('.').every(k => Is(ctx = ctx[ k ]))
+    ? ctx
+    : fallback
+}
+
+export function set(ctx, path, value) {
+  const it = path.split('.')
+  const last = it.pop()
+
+  it.reduce((prev, next, i) =>
+    prev[ next ] ??= Is.i(+it[ i + 1 ])
+      ? []
+      : {}, ctx)[ last ] = value
+  return ctx
+}
+
 export function tost(x, n) {
   const seen = new WeakSet
   return stringify(x, (k, v) => {
