@@ -51,12 +51,12 @@ export function use() /* exp */ {
   for (x of src)
     Object.assign(dsc, Object.getOwnPropertyDescriptors(x))
 
-      /* eslint-disable indent, brace-style */
-      for (x in dsc) {     (dsc[ x ].get ?? (
-          cew[ 2 ] != µ && (dsc[ x ].writable     = cew[ 2 ])))
-          cew[ 1 ] != µ && (dsc[ x ].enumerable   = cew[ 1 ])
-          cew[ 0 ] != µ && (dsc[ x ].configurable = cew[ 0 ])
-      } /* eslint-enable indent, brace-style */
+  /* eslint-disable indent, brace-style */
+  for (x in dsc) {     (dsc[ x ].get ?? (
+      cew[ 2 ] != µ && (dsc[ x ].writable     = cew[ 2 ])))
+      cew[ 1 ] != µ && (dsc[ x ].enumerable   = cew[ 1 ])
+      cew[ 0 ] != µ && (dsc[ x ].configurable = cew[ 0 ])
+  } /* eslint-enable indent, brace-style */
 
   for (x of trg) Object.defineProperties(x, dsc)
   return x
